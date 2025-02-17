@@ -1,5 +1,5 @@
 {
-  "name": "cow-swap",
+  "name": "message-signing",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -16,10 +16,8 @@
     "typescript": "^5.7.3"
   },
   "dependencies": {
-    "@cowprotocol/cow-sdk": "^5.10.0",
     "@fordefi/web3-provider": "^0.2.5",
     "dotenv": "^16.4.7",
-    "ethers": "^5.7.2",
-    "hardhat": "^2.22.18"
+    "ethers": "^6.11.1"
   }
 }
