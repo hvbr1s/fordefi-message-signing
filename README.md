@@ -1,10 +1,6 @@
-# CowSwap Token Swapper with Fordefi
+# Message Signing with Fordefi
 
-A script to perform token swaps on CowSwap (CoW Protocol) using Fordefi as the signer.
-
-## Overview
-
-This script enables you to execute token swaps on CowSwap while using your Fordefi EVM vault as the signer. It leverages CowSwap's API to get quotes and create orders, with transaction signing handled by Fordefi.
+A script for signing arbitrary typed data with your Fordefi EVM vault
 
 ## Prerequisites
 
