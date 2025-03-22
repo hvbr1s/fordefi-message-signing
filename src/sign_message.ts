@@ -3,20 +3,14 @@ import { ProviderRpcError }from 'viem/errors/rpc'
 import dotenv from 'dotenv';
 import fs from 'fs';
 
-// Load Fordefi secrets
 dotenv.config();
-const FORDEFI_API_USER_TOKEN = process.env.FORDEFI_API_USER_TOKEN ?? 
-  (() => { throw new Error('FORDEFI_API_USER_TOKEN is not set'); })();
-const privateKeyFilePath = './fordefi_secret/private.pem';
-const PEM_PRIVATE_KEY = fs.readFileSync(privateKeyFilePath, 'utf8') ??
-  (() => { throw new Error('PEM_PRIVATE_KEY is not set'); })();
 
 // 1. Configure the Fordefi provider
 const config: FordefiProviderConfig = {
   chainId: EvmChainId.NUMBER_8453, // Base in this example
   address: '0x8BFCF9e2764BC84DE4BBd0a0f5AAF19F47027A73', // The Fordefi EVM Vault that will sign the message
-  apiUserToken: FORDEFI_API_USER_TOKEN,
-  apiPayloadSignKey: PEM_PRIVATE_KEY,
+  apiUserToken: process.env.FORDEFI_API_USER_TOKEN ?? (() => { throw new Error('FORDEFI_API_USER_TOKEN is not set'); })(), 
+  apiPayloadSignKey: fs.readFileSync('./fordefi_secret/private.pem', 'utf8') ?? (() => { throw new Error('PEM_PRIVATE_KEY is not set'); })(),
   rpcUrl: 'https://base.llamarpc.com',
   skipPrediction: false 
 };
@@ -83,7 +77,7 @@ async function main() {
   // The data you want to sign
   const myData = {
     someValue: '12345',
-    someString: 'Hello EIP-712!',
+    someString: 'Go go Fordefi!',
   };
 
   // Prepare the data for EIP-712 signing
