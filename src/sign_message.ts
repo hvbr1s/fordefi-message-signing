@@ -1,4 +1,5 @@
 import { FordefiWeb3Provider, EvmChainId, FordefiProviderConfig } from '@fordefi/web3-provider';
+import { ProviderRpcError }from 'viem/errors/rpc'
 import dotenv from 'dotenv';
 import fs from 'fs';
 
@@ -19,15 +20,14 @@ const config: FordefiProviderConfig = {
   rpcUrl: 'https://base.llamarpc.com',
   skipPrediction: false 
 };
-const provider = new FordefiWeb3Provider(config);
 
 // 2. Define your EIP-712 domain
 //    Adjust these fields to match your project’s requirements.
 const domain = {
-  name: 'HelloDapp',                 // Human-readable name of your domain
-  version: '1',                   // Version of your domain
-  chainId: config.chainId,                     // EVM chain ID (1 for Ethereum Mainnet)
-  verifyingContract: '0x1fF1Da912b679b6fddF8900ddB8E7A10111762f2',  // Contract that will verify the signature
+  name: 'HelloDapp',                                                // Human-readable name of your domain
+  version: '1',                                                     // Version of your domain
+  chainId: config.chainId,                                          // EVM chain ID (1 for Ethereum Mainnet)
+  verifyingContract: '0x28A2b192810484C19Dd3c8884f0F30AfE4796ad7',  // Contract that will verify the signature
 };
 
 // 3. Define your typed data structure
@@ -43,7 +43,6 @@ const eip712Types = {
 function prepareTypedData(data: any) {
   return {
     domain,
-    // EIP712Domain is a standard type used in EIP-712, so we must include it.
     types: {
       EIP712Domain: [
         { name: 'name', type: 'string' },
@@ -58,11 +57,28 @@ function prepareTypedData(data: any) {
   };
 }
 
-// 5. Example usage
+let provider = new FordefiWeb3Provider(config);
+
 async function main() {
   // Wait for Fordefi provider to connect
   const result = await provider.waitForEmittedEvent('connect');
   console.log(`Connected to chain ${result.chainId}`);
+
+  // Handle provider disconnection
+  provider.on('disconnect', async (error: ProviderRpcError) => {
+    console.log('Provider disconnected:', error.message);
+    
+    // Create a new provider instance
+    provider = new FordefiWeb3Provider(config);
+    
+    // Wait for the new provider to connect
+    try {
+      const reconnectResult = await provider.waitForEmittedEvent('connect');
+      console.log(`Reconnected to chain ${reconnectResult.chainId}`);
+    } catch (reconnectError) {
+      console.error('Failed to reconnect provider:', reconnectError);
+    }
+  });
 
   // The data you want to sign
   const myData = {
@@ -73,7 +89,7 @@ async function main() {
   // Prepare the data for EIP-712 signing
   const typedData = prepareTypedData(myData);
 
-  // Sign the typed data using `eth_signTypedData_v4`
+  // Sign the typed data using the `eth_signTypedData_v4` method
   const signerAddress = config.address; // Your Fordefi EVM Vault
   const signature = await provider.request({
     method: 'eth_signTypedData_v4',

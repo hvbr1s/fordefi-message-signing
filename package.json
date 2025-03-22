@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "sign": "npx ts-node src/sign_message.ts"
+    "sign": "npx ts-node src/sign_message.ts",
+    "decode": "npx ts-node src/decode.ts"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
   "dependencies": {
     "@fordefi/web3-provider": "^0.2.5",
     "dotenv": "^16.4.7",
-    "ethers": "^6.11.1"
+    "ethers": "^6.11.1",
+    "moment": "^2.30.1"
   }
 }
