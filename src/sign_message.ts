@@ -33,7 +33,7 @@ const eip712Types = {
   ],
 };
 
-// 4. Create a function to prepare the typed data payload
+// 4. This function prepares the typed data payload
 function prepareTypedData(data: any) {
   return {
     domain,
