@@ -1,6 +1,6 @@
 # Message Signing with Fordefi
 
-A script for signing arbitrary typed data with your Fordefi EVM vault
+Helper code for signing arbitrary EIP-712 typed data with your Fordefi EVM vault
 
 ## Prerequisites
 
@@ -15,9 +15,48 @@ A script for signing arbitrary typed data with your Fordefi EVM vault
 ```bash
 npm install
 ```
-3. Create a `.env` file in the root directory with your Fordefi API user token:
+3.Install your chosen version ethers:
+```bash
+npm install ethers@^6.11.1
+```
+or 
+```bash
+npm install ethers@^5.8.0
+```
+4. Create a `.env` file in the root directory with your Fordefi API user token:
 ```bash
 FORDEFI_API_USER_TOKEN=your_api_user_token_here
 ```
 
 4. Create a directory `fordefi_secret` and place your API Signer's PEM private key in `fordefi_secret/private.pem`
+
+## Configuration
+
+The script uses the following main configurations:
+
+- **Fordefi Provider**: Configures the connection to your Fordefi vault
+- **Token Addresses**: Currently set to swap USUAL → USDT on Ethereum mainnet
+- **Amount**: Set in the `sellAmountBeforeFee` parameter
+
+To modify the swap parameters, update the `fordefiConfig` object in `config.ts`:
+```typescript
+export const fordefiConfig: FordefiProviderConfig = {
+    chainId: EvmChainId.NUMBER_8453, // Base
+    address: '0x1234', // The Fordefi EVM Vault that will sign the message
+    apiUserToken: process.env.FORDEFI_API_USER_TOKEN ?? (() => { throw new Error('FORDEFI_API_USER_TOKEN is not set'); })(), // your Fordefi API User Access Token 
+    apiPayloadSignKey: fs.readFileSync('./fordefi_secret/private.pem', 'utf8') ?? (() => { throw new Error('PEM_PRIVATE_KEY is not set'); })(), // your Fordefi API User Private Key 
+    rpcUrl: 'https://base.llamarpc.com', // RPC endpoint for chosen network
+  };
+```
+
+## Usage
+
+To sign a message while using `ethers@^5.x.x`
+```bash
+npm run sign-v5
+```
+To sign a message while using `ethers@^6.x.x`
+```bash
+npm run sign-v6
+```
+
