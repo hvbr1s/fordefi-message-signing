@@ -7,6 +7,16 @@ Helper code for signing arbitrary EIP-712 typed data with your Fordefi EVM vault
 - Fordefi organization and EVM vault
 - Node.js and npm installed
 - Fordefi credentials: API User token and API Signer set up ([documentation](https://docs.fordefi.com/developers/program-overview))
+- TypeScript setup:
+  ```bash
+  # Install TypeScript and type definitions
+  npm install typescript --save-dev
+  npm install @types/node --save-dev
+  npm install tsx --save-dev
+  
+  # Initialize a TypeScript configuration file (if not already done)
+  npx tsc --init
+  ```
 
 ## Setup
 
@@ -17,11 +27,11 @@ npm install
 ```
 3.Install your chosen version ethers:
 ```bash
-npm install ethers@^6.11.1
+npm install ethers@^6.x.x
 ```
 or 
 ```bash
-npm install ethers@^5.8.0
+npm install ethers@^5.x.x
 ```
 4. Create a `.env` file in the root directory with your Fordefi API user token:
 ```bash
