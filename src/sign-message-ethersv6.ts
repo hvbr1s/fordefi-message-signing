@@ -1,8 +1,5 @@
 import { getProvider } from './get-provider-v6';
 import { fordefiConfig } from './config'
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 // Define your EIP-712 domain
 //    Adjust these fields to match your project’s requirements.
