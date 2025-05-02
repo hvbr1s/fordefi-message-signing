@@ -34,11 +34,8 @@ FORDEFI_API_USER_TOKEN=your_api_user_token_here
 
 The script uses the following main configurations:
 
-- **Fordefi Provider**: Configures the connection to your Fordefi vault
-- **Token Addresses**: Currently set to swap USUAL → USDT on Ethereum mainnet
-- **Amount**: Set in the `sellAmountBeforeFee` parameter
+To modify parameters, update the `fordefiConfig` object in `config.ts`:
 
-To modify the swap parameters, update the `fordefiConfig` object in `config.ts`:
 ```typescript
 export const fordefiConfig: FordefiProviderConfig = {
     chainId: EvmChainId.NUMBER_8453, // Base
