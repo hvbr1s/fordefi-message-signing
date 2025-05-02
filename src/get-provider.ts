@@ -3,7 +3,7 @@ import { fordefiConfig } from './config'
 import { ethers } from 'ethers';
 
 let fordefiProvider: FordefiWeb3Provider | null = null;
-let provider: ethers.providers.Web3Provider | null = null; // we're using Web3Provider because we're using ethers@^5.8.0
+let provider: ethers.providers.JsonRpcProvider | null = null; // we're using Web3Provider because we're using ethers@^5.8.0
 
 export async function getProvider() {
     if (!fordefiProvider) {
